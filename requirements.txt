@@ -1,0 +1,6 @@
+python-gnupg==0.3.9
+coloredlogs==5.0
+plant==0.1.2
+cryptography==1.5
+milieu==0.1.9
+PTable==0.9.2

@@ -1,0 +1,20 @@
+language: python
+sudo: false
+python:
+  - "2.7"
+
+env:
+  - TEST_TYPE=lint
+  - TEST_TYPE=unit
+  - TEST_TYPE=functional
+  - TEST_TYPE=integration
+
+install:
+  - pip install -r development.txt
+  - python setup.py develop
+
+script:
+  - make $TEST_TYPE
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

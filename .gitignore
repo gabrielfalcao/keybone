@@ -1,0 +1,17 @@
+*.py[cod]
+pip-log.txt
+pip-delete-this-directory.txt
+.coverage
+*flymake*
+*#*
+.*#*
+*.#*
+.*.#*
+*.egg*
+nohup.out
+deps/
+dist/*.gz
+docs/build
+keys/*
+*/keys/*
+backup.keybone
