@@ -39,7 +39,10 @@ setup(
         'Create/Manage/List GPG Keys and Encrypt/Decrypt things with them'
     ]),
     entry_points={
-        'console_scripts': ['keybone = keybone.console.main:entrypoint'],
+        'console_scripts': [
+            'keybone = keybone.console.main:entrypoint',
+            'kb = keybone.console.main:entrypoint',
+        ],
     },
     author='Gabriel Falcao',
     author_email='gabriel@nacaolivre.org',
