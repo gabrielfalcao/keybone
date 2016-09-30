@@ -34,6 +34,8 @@ def execute_command_decrypt():
     gee = KeyBone()
     if args.secret:
         passphrase = args.secret
+    elif args.no_secret:
+        passphrase = b''
     else:
         passphrase = get_passphrase()
 
@@ -65,8 +67,15 @@ def execute_command_sign():
     from keybone.console.parsers.sign import parser
 
     args = parser.parse_args(get_sub_parser_argv())
+    if args.secret:
+        passphrase = args.secret
+    elif args.no_secret:
+        passphrase = b''
+    else:
+        passphrase = get_passphrase()
+
     gee = KeyBone()
-    signed = gee.sign(args.recipient, args.data, args.secret)
+    signed = gee.sign(args.recipient, args.data, passphrase)
 
     if signed:
         print signed

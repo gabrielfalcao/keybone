@@ -52,18 +52,18 @@ functional:
 	nosetests tests/functional
 
 integration:
+	keybone wipe --no-backup --force
 	keybone quickstart --force tests/keybone.yml
-	keybone create "John Doe" john@doe.com --secret='foobar'
-	keybone import "$$(cat https://stallman.org/rms-pubkey.txt)"
-	keybone import "$(curl 'http://pgp.mit.edu/pks/lookup?op=get&search=0xEFAF4C707AED2EF2')"
-	keybone decrypt --secret='foobar' "$$(keybone encrypt john@doe.com 'A Private Hello')"
+	keybone create "John Doe" john@doe.com --no-secret
+	keybone import "$$(curl -q https://keybase.io/gabrielfalcao/key.asc)"
+	keybone decrypt --no-secret "$$(keybone encrypt john@doe.com 'A Private Hello')"
 	keybone list
 	keybone backup > backup.keybone
 	keybone wipe --no-backup --force
 	keybone recover --force backup.keybone
 	keybone list
 	keybone private john@doe.com
-	keybone public 0F6A146532D869AEE438F74B6211AA3B00411886
+	keybone public 2489F6CF202E87E6EBFB34F9F50D30D82A94B8D0
 	keybone wipe --no-backup --force
 
 tests: unit functional

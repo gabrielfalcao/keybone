@@ -38,17 +38,20 @@ def execute_command_create():
     gee = KeyBone()
     if args.secret:
         passphrase = args.secret
+    elif args.no_secret:
+        passphrase = b''
     else:
         passphrase = get_passphrase()
 
     name = args.name
     email = args.email
-    password = passphrase.strip()
+    password = passphrase
     try:
         key = gee.generate_key(name, email, password)
         logger.info("Generated: {0}".format(key))
     except KeyAlreadyExists as e:
         logger.error('key already exists: email={email}, id={keyid}'.format(**e.key))
+        raise SystemExit(1)
 
 
 def execute_command_list():
@@ -101,7 +104,7 @@ def execute_command_import():
         result = gee.import_key(key)
     except InvalidKeyError as e:
         logger.error('failed to import key: {0}'.format(e))
-        return
+        raise SystemExit(1)
 
     for x in result.fingerprints:
         logger.info('imported: %s', x)
