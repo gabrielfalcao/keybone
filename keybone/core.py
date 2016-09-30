@@ -297,6 +297,7 @@ class KeyBone(object):
 
         # TODO: check for the right key by fingerprint, emails are NOT
         # unique in a keyring
+
         key = self.get_key(uid['email'])
         if not key['private']:
             raise InvalidKeyError('cannot decrypt because private key is missing for: {0}'.format(uid['email']))
