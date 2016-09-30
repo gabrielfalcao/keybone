@@ -6,3 +6,4 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument('ciphertext', metavar='<ciphertext>', help='the content to be decrypted')
 parser.add_argument('--secret', metavar='<passphrase>', help='a passphrase')
+parser.add_argument('--no-secret', help='create without password', action='store_true', default=False)
