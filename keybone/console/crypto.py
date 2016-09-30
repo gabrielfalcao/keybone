@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 import logging
+
 from keybone.core import KeyBone
 from keybone.core import InvalidRecipient
 from keybone.core import InvalidKeyError
+
+from keybone.console.ui import get_passphrase
+
 from keybone.console.base import get_sub_parser_argv
 
 
@@ -29,8 +32,13 @@ def execute_command_decrypt():
 
     args = parser.parse_args(get_sub_parser_argv())
     gee = KeyBone()
+    if args.secret:
+        passphrase = args.secret
+    else:
+        passphrase = get_passphrase()
+
     try:
-        plaintext = gee.decrypt(args.ciphertext, args.secret)
+        plaintext = gee.decrypt(args.ciphertext, passphrase)
     except InvalidKeyError as e:
         logger.error("failed to decrypt: {0}".format(e))
         raise SystemExit(1)

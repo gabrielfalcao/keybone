@@ -6,7 +6,6 @@ from __future__ import unicode_literals
 import json
 import sys
 import logging
-import getpass
 from prettytable import PrettyTable
 
 from keybone.core import KeyBone
@@ -15,6 +14,7 @@ from keybone.core import InvalidKeyError
 from keybone.util import ensure_unicode
 
 from keybone.console.ui import get_bool
+from keybone.console.ui import get_passphrase
 from keybone.console.base import get_sub_parser_argv
 
 
@@ -39,13 +39,7 @@ def execute_command_create():
     if args.secret:
         passphrase = args.secret
     else:
-        ppw1 = getpass.getpass('passphrase:')
-        ppw2 = getpass.getpass('confirmation:')
-        if ppw1 == ppw2:
-            passphrase = ppw1
-        else:
-            logger.critical('passwords mismatch')
-            raise SystemExit(1)
+        passphrase = get_passphrase()
 
     name = args.name
     email = args.email
