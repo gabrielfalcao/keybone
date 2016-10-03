@@ -261,11 +261,6 @@ class KeyBone(object):
             raise InvalidRecipient(msg)
 
         kw = {}
-        passphrase = self.get_passphrase(recipient)
-
-        if passphrase:
-            kw['passphrase'] = passphrase
-
         if sign_from:
             kw['sign'] = self.get_fingerprint(sign_from)
 
