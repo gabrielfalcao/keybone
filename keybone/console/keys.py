@@ -39,7 +39,7 @@ def execute_command_create():
     if args.secret:
         passphrase = args.secret
     elif args.no_secret:
-        passphrase = b''
+        passphrase = None
     else:
         passphrase = get_passphrase()
 

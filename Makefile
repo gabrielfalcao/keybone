@@ -56,7 +56,8 @@ integration:
 	keybone quickstart --force tests/keybone.yml
 	keybone create "John Doe" john@doe.com --no-secret
 	keybone import "$$(curl -q https://keybase.io/gabrielfalcao/key.asc)"
-	keybone decrypt --no-secret "$$(keybone encrypt john@doe.com 'A Private Hello')"
+	keybone encrypt --no-secret john@doe.com 'A Private Hello'
+	keybone decrypt -n "$$(keybone encrypt --no-secret john@doe.com 'A Private Hello')"
 	keybone list
 	keybone backup > backup.keybone
 	keybone wipe --no-backup --force

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import io
+import os
+import statvfs
 import logging
 
 from keybone.core import KeyBone
@@ -12,16 +14,33 @@ from keybone.console.ui import get_passphrase
 from keybone.console.base import get_sub_parser_argv
 
 
+MAX_FILENAME = os.statvfs(os.getcwd())[statvfs.F_NAMEMAX]
 logger = logging.getLogger('keybone')
+
+
+def is_filename(string):
+    return len(string) <= MAX_FILENAME and os.sep in string
 
 
 def execute_command_encrypt():
     from keybone.console.parsers.encrypt import parser
 
     args = parser.parse_args(get_sub_parser_argv())
+
     gee = KeyBone()
+    if is_filename(args.plaintext):
+        if not os.path.exists(args.plaintext):
+            msg = 'given encryption source appears to be a file but its path does not exist: {0}'
+            logger.error(msg.format(args.plaintext))
+            raise SystemExit(1)
+
+        plaintext = io.open(args.plaintext, 'rb').read()
+
+    else:
+        plaintext = args.plaintext
+
     try:
-        print gee.encrypt(args.recipient, args.plaintext, args.sign_from)
+        print gee.encrypt(args.recipient, plaintext, sign_from=args.sign_from)
     except InvalidRecipient as e:
         logger.error("failed to encrypt: {0}".format(e))
         raise SystemExit(1)
@@ -35,12 +54,24 @@ def execute_command_decrypt():
     if args.secret:
         passphrase = args.secret
     elif args.no_secret:
-        passphrase = b''
+        passphrase = None
     else:
         passphrase = get_passphrase()
 
+    if is_filename(args.ciphertext):
+        if not os.path.exists(args.ciphertext):
+            msg = 'given decryption source appears to be a file but its path does not exist: {0}'
+            logger.error(msg.format(args.ciphertext))
+            raise SystemExit(1)
+
+        ciphertext = io.open(args.ciphertext, 'rb').read()
+
+    else:
+        ciphertext = args.ciphertext
+
     try:
-        plaintext = gee.decrypt(args.ciphertext, passphrase)
+        plaintext = gee.decrypt(ciphertext, passphrase)
+
     except InvalidKeyError as e:
         logger.error("failed to decrypt: {0}".format(e))
         raise SystemExit(1)
@@ -70,7 +101,7 @@ def execute_command_sign():
     if args.secret:
         passphrase = args.secret
     elif args.no_secret:
-        passphrase = b''
+        passphrase = None
     else:
         passphrase = get_passphrase()
 
