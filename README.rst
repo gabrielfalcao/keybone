@@ -1,4 +1,4 @@
-KeyBone 0.3.0 - PGP for humans
+KeyBone 0.3.1 - PGP for humans
 ================================
 
 .. image:: https://readthedocs.org/projects/keybone/badge/?version=latest
