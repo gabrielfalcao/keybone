@@ -104,7 +104,7 @@ class KeyBone(object):
         :param keys: a list of keys
         :returns: a sorted list
         """
-        ordered = sorted(sorted(keys, key=lambda x: x['email']), key=lambda x: x['private'], reverse=True)
+        ordered = sorted(sorted(keys, key=lambda x: x.get('email', '')), key=lambda x: x.get('private', ''), reverse=True)
         uniq = []
         final = []
         for key in ordered:

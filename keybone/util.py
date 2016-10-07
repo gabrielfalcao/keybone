@@ -114,6 +114,9 @@ class GPGSerializer(object):
             key.pop('uids', None)
             key.update(uid)
 
+        if 'email' not in key:
+            key['email'] = b'<none> '
+
         key['public'] = self.get_public_key(key)
         key['private'] = self.get_private_key(key)
         return key
