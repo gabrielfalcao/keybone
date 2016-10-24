@@ -128,9 +128,16 @@ class KeyBone(object):
         """
         return self.sort_keys(map(self.serialize.key, self.gpg.list_keys(False)))
 
-    def list_keys(self):
+    def list_keys(self, public=False, private=False):
         """returns a list of all existing keys, public and private"""
+        if public is True:
+            return self.list_public_keys()
+
+        if private is True:
+            return self.list_private_keys()
+
         all_keys = []
+
         all_keys.extend(self.list_private_keys())
         all_keys.extend(self.list_public_keys())
         return self.sort_keys(all_keys)
@@ -179,43 +186,48 @@ class KeyBone(object):
 
         return result
 
-    def get_key_for_id(self, keyid):
+    def get_key_for_id(self, keyid, **kwargs):
         """returns the key for the given id
         :param keyid: the key id
         :returns: the key dictionary of ``None``
         """
 
-        for key in self.list_keys():
+        for key in self.list_keys(**kwargs):
             if key['keyid'] == keyid:
                 return key
 
-    def get_key_for_fingerprint(self, fingerprint):
+    def get_key_for_fingerprint(self, fingerprint, **kwargs):
         """returns the key for the given fingerprint
         :param fingerprint: the fingerprint
         :returns: the key dictionary of ``None``
         """
-        for key in self.list_keys():
+        for key in self.list_keys(**kwargs):
             if key['fingerprint'] == fingerprint:
                 return key
 
-    def get_key_for_email(self, email):
+    def get_key_for_email(self, email, **kwargs):
         """returns the key for the given email
         :param email: the email
         :returns: the key dictionary of ``None``
         """
-        for key in self.list_keys():
+        for key in self.list_keys(**kwargs):
             if key['email'] == email:
                 return key
 
-    def get_key(self, id_fingerprint_or_email):
+    def get_key(self, id_fingerprint_or_email, public=False, private=True):
         """returns the key for the given recipient
         :param id_fingerprint_or_email: a key id, fingerprint or email
         :returns: the key dictionary of ``None``
         """
+        kwargs = {
+            b'public': public,
+            b'private': private,
+        }
         return (
-            self.get_key_for_fingerprint(id_fingerprint_or_email) or
-            self.get_key_for_id(id_fingerprint_or_email) or
-            self.get_key_for_email(id_fingerprint_or_email)
+            self.get_key_for_fingerprint(id_fingerprint_or_email, **kwargs) or
+            self.get_key_for_id(id_fingerprint_or_email, **kwargs) or
+            self.get_key_for_email(id_fingerprint_or_email, **kwargs)
+
         ) or {
             'keyid': None,
             'fingerprint': None,
@@ -223,12 +235,12 @@ class KeyBone(object):
             'passphrase': None,
         }
 
-    def get_fingerprint(self, recipient):
+    def get_fingerprint(self, recipient, public=False):
         """retrieves the fingerprint
         :param recipient: a key id, fingerprint, email
         :returns: a fingerprint
         """
-        key = self.get_key(recipient)
+        key = self.get_key(recipient, public=public)
         return key['fingerprint']
 
     def get_keyid(self, recipient):
@@ -255,7 +267,7 @@ class KeyBone(object):
         :param sign_from: a recipient who will sign the message
         :returns: ciphertext
         """
-        fingerprint = self.get_fingerprint(recipient)
+        fingerprint = self.get_fingerprint(recipient, public=True)
         if not fingerprint:
             msg = 'there are no keys for the recipient for email: {0}'.format(recipient)
             raise InvalidRecipient(msg)
@@ -293,7 +305,7 @@ class KeyBone(object):
         # TODO: check for the right key by fingerprint, emails are NOT
         # unique in a keyring
 
-        key = self.get_key(uid['email'])
+        key = self.get_key(uid['email'], private=False)
         if not key['private']:
             raise InvalidKeyError('cannot decrypt because private key is missing for: {0}'.format(uid['email']))
 

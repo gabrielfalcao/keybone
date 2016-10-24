@@ -18,8 +18,17 @@ MAX_FILENAME = os.statvfs(os.getcwd())[statvfs.F_NAMEMAX]
 logger = logging.getLogger('keybone')
 
 
-def is_filename(string):
+def expand_path(path):
+    return os.path.abspath(os.path.expanduser(path))
+
+
+def is_a_valid_filename(string):
     return len(string) <= MAX_FILENAME and os.sep in string
+
+
+def is_file_and_exists(string):
+    path = expand_path(string)
+    return is_a_valid_filename(path) and os.path.exists(path)
 
 
 def execute_command_encrypt():
@@ -28,12 +37,7 @@ def execute_command_encrypt():
     args = parser.parse_args(get_sub_parser_argv())
 
     gee = KeyBone()
-    if is_filename(args.plaintext):
-        if not os.path.exists(args.plaintext):
-            msg = 'given encryption source appears to be a file but its path does not exist: {0}'
-            logger.error(msg.format(args.plaintext))
-            raise SystemExit(1)
-
+    if is_file_and_exists(args.plaintext):
         plaintext = io.open(args.plaintext, 'rb').read()
 
     else:
@@ -58,12 +62,7 @@ def execute_command_decrypt():
     else:
         passphrase = get_passphrase()
 
-    if is_filename(args.ciphertext):
-        if not os.path.exists(args.ciphertext):
-            msg = 'given decryption source appears to be a file but its path does not exist: {0}'
-            logger.error(msg.format(args.ciphertext))
-            raise SystemExit(1)
-
+    if is_file_and_exists(args.ciphertext):
         ciphertext = io.open(args.ciphertext, 'rb').read()
 
     else:

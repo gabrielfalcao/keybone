@@ -24,9 +24,29 @@ Features:
 - Easily create,list,revogate and sign keys
 - Easily encrypt and decrypt files and one-off strings
 
-installing
-==========
+Installing dependencies on Mac OSX (homebrew)
+=============================================
+
+1. Ensure `GnuPG <https://gnupg.org/>`_  >= ``2.1.15`` is installed
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: bash
+
+
+    brew uninstall -y --force gnupg && brew unlink gnupg2 && brew link --overwrite --force gnupg2
+
+
+In your virtualenv
+==================
+
 
 .. code:: bash
 
     pip install keybone
+
+
+
+Notes
+-----
+
+* Talk about: https://blog.cryptographyengineering.com/2014/08/13/whats-matter-with-pgp/
