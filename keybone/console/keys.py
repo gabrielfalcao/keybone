@@ -3,6 +3,7 @@
 
 from __future__ import unicode_literals
 
+import io
 import json
 import sys
 import logging
@@ -16,6 +17,7 @@ from keybone.util import ensure_unicode
 from keybone.console.ui import get_bool
 from keybone.console.ui import get_passphrase
 from keybone.console.base import get_sub_parser_argv
+from keybone.console.util import is_file_and_exists
 
 
 logger = logging.getLogger('keybone')
@@ -98,6 +100,9 @@ def execute_command_import():
     key = args.key
     if not key:
         key = sys.stdin.read()
+
+    elif is_file_and_exists(key):
+        key = io.open(key, 'rb').read()
 
     key = "\n".join([x.strip() for x in key.splitlines()])
     try:
