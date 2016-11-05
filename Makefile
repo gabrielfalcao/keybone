@@ -28,8 +28,7 @@ export DEBIAN_FRONTEND
 export PYTHONUNBUFFERED
 export KEYBONE_CONFIG_PATH
 
-all:
-	python main.py
+all: tests
 
 tests: lint unit functional
 
