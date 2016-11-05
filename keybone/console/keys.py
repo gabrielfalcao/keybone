@@ -121,7 +121,7 @@ def execute_command_show_public():
     args = parser.parse_args(get_sub_parser_argv())
     args
     gee = KeyBone()
-    key = gee.get_key(args.recipient)
+    key = gee.get_key(args.recipient, public=True, private=False)
     if key['public']:
         print key['public']
 
@@ -132,7 +132,7 @@ def execute_command_show_private():
     args = parser.parse_args(get_sub_parser_argv())
     args
     gee = KeyBone()
-    key = gee.get_key(args.recipient)
+    key = gee.get_key(args.recipient, private=True, public=False)
     if key['private']:
         print key['private']
 
@@ -143,7 +143,7 @@ def execute_command_show_passphrase():
     args = parser.parse_args(get_sub_parser_argv())
     args
     gee = KeyBone()
-    key = gee.get_key(args.recipient)
+    key = gee.get_key(args.recipient, private=True, public=False)
     passphrase = key.get('passphrase')
 
     if passphrase:
@@ -156,7 +156,7 @@ def execute_command_show():
     args = parser.parse_args(get_sub_parser_argv())
 
     gee = KeyBone()
-    key = gee.get_key(args.recipient)
+    key = gee.get_key(args.recipient, private=True, public=True)
     if not key:
         raise SystemExit(1)
 
@@ -170,7 +170,7 @@ def execute_command_delete():
 
     gee = KeyBone()
 
-    key = gee.get_key(args.recipient)
+    key = gee.get_key(args.recipient, private=True, public=True)
     if not key['fingerprint']:
         print "\033[1;31mno such key\033[0m"
         raise SystemExit(1)

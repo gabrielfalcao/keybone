@@ -68,8 +68,19 @@ def execute_command_verify():
 
     args = parser.parse_args(get_sub_parser_argv())
     gee = KeyBone()
-    status, trust_level = gee.verify(args.signed_data)
 
+    if is_file_and_exists(args.signed_data):
+        signed_data = io.open(args.signed_data, 'rb').read()
+
+    else:
+        signed_data = args.signed_data
+
+    result = gee.verify(signed_data)
+    if not result:
+        print "Failed to verify"
+        raise SystemExit(1)
+
+    status, trust_level = result
     if 'signature valid' not in status.strip():
         print status, trust_level
         raise SystemExit(1)
@@ -89,7 +100,14 @@ def execute_command_sign():
         passphrase = get_passphrase()
 
     gee = KeyBone()
-    signed = gee.sign(args.recipient, args.data, passphrase)
+
+    if is_file_and_exists(args.data):
+        data = io.open(args.data, 'rb').read()
+
+    else:
+        data = args.data
+
+    signed = gee.sign(args.recipient, data, passphrase)
 
     if signed:
         print signed
