@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from keybone.aes import encrypt
-from keybone.aes import decrypt
+from keybone.lib.aes import encrypt
+from keybone.lib.aes import decrypt
 
 
 def test_encryption():

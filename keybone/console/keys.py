@@ -9,9 +9,9 @@ import sys
 import logging
 from prettytable import PrettyTable
 
-from keybone.core import KeyBone
-from keybone.core import KeyAlreadyExists
-from keybone.core import InvalidKeyError
+from keybone.lib.core import KeyBone
+from keybone.lib.core import KeyAlreadyExists
+from keybone.lib.core import InvalidKeyError
 from keybone.util import ensure_unicode
 
 from keybone.console.ui import get_bool
