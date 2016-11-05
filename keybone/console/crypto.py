@@ -3,9 +3,9 @@
 import io
 import logging
 
-from keybone.core import KeyBone
-from keybone.core import InvalidRecipient
-from keybone.core import InvalidKeyError
+from keybone.lib.core import KeyBone
+from keybone.lib.core import InvalidRecipient
+from keybone.lib.core import InvalidKeyError
 
 from keybone.console.ui import get_passphrase
 
