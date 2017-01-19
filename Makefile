@@ -81,7 +81,7 @@ ensure-dependencies:
 
 release:
 	@./.release
-	@python setup.py sdist register upload
+	@python setup.py sdist upload
 
 list:
 	@$(executable) list
