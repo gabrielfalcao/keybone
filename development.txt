@@ -8,3 +8,4 @@ pinocchio==0.4.2
 sphinx-argparse==0.1.15
 sphinx-rtd-theme==0.1.9
 sure==1.4.0
+twine==1.8.1
