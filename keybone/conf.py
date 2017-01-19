@@ -6,7 +6,7 @@ import sys
 import logging
 import coloredlogs
 from plant import Node
-from milieu import Environment
+from envelop import Environment
 
 self = sys.modules[__name__]
 
