@@ -80,8 +80,10 @@ ensure-dependencies:
 	@CFLAGS='-std=c99' pip install -r development.txt
 
 release:
-	@./.release
-	@python setup.py sdist upload
+	@rm -rf dist
+	@python setup.py sdist
+	@twine register -r gabrielfalcao_pypi dist/*.tar.gz
+	@twine upload -r gabrielfalcao_pypi dist/*.tar.gz
 
 list:
 	@$(executable) list
