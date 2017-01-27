@@ -82,8 +82,7 @@ ensure-dependencies:
 release:
 	@rm -rf dist
 	@python setup.py sdist
-	@twine register -r gabrielfalcao_pypi dist/*.tar.gz
-	@twine upload -r gabrielfalcao_pypi dist/*.tar.gz
+	@twine upload dist/*.tar.gz
 
 list:
 	@$(executable) list
