@@ -25,7 +25,7 @@ def get_env(path):
 
 
 def initialize_config(self, path, env):
-    coloredlogs.install(level=logging.INFO, show_hostname=False, fmt='[%(name)s] %(levelname)s %(message)s')
+    coloredlogs.install(level=logging.INFO, show_hostname=False)  # , fmt='[%(name)s] %(levelname)s %(message)s')
     if os.path.exists(path):
         stat = os.stat(path)
         mode = oct(stat.st_mode)[-3:]

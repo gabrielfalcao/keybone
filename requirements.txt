@@ -1,4 +1,4 @@
-coloredlogs==5.2
+coloredlogs==6.0
 cryptography==1.7.1
 envelop==0.2.0
 plant==0.1.2

@@ -45,10 +45,10 @@ clean:
 	git clean -Xdf
 
 unit:
-	nosetests tests/unit
+	nosetests --rednose tests/unit
 
 functional:
-	nosetests tests/functional
+	nosetests --with-spec --spec-color tests/functional
 
 integration:
 	keybone wipe --no-backup --force
